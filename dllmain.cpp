@@ -1,4 +1,4 @@
-﻿#include "pch.h"
+#include "pch.h"
 
 #include <Windows.h>
 #include <iostream>
@@ -7,10 +7,18 @@ using namespace std;
 void SendPacket(int packetTypeID, int cid, int number, int one);
 
 
+struct PacketTypes {
+public:
+    static const int Follow = 0xa2;
+    static const int Attack = 0xa1;
+
+};
+
 
 DWORD WINAPI InjectThread(HMODULE hModule)
 {
     FILE* f;
+   
 
 
 
@@ -32,7 +40,7 @@ DWORD WINAPI InjectThread(HMODULE hModule)
         if (GetAsyncKeyState(VK_NUMPAD3) & 1)
         {
             cout << "Follow Attempt" <<endl;
-            SendPacket(0x0a2, 0x800000A7, 10, 1);
+            SendPacket(PacketTypes::Follow, 0x800000A7, 10, 1);
             cout << "Did it work ? :X";
 
         }
@@ -55,8 +63,9 @@ DWORD WINAPI InjectThread(HMODULE hModule)
 
 void SendPacket(int packetTypeID, int cid, int number, int one)
 {
-    uint32_t callpackettypeFunc = 0x4F8290;
-    uint32_t callPacketInformation = 0x4F88A0;
+    // dynamic addresses, just for testing purposes.
+    uint32_t callpackettypeFunc = 0x4F8290; 
+    uint32_t callPacketInformation = 0x4F88A0; 
     uint32_t callpacketcool = 0x4F8E40;
     __asm
     {
@@ -68,8 +77,7 @@ void SendPacket(int packetTypeID, int cid, int number, int one)
         CALL callPacketInformation
         PUSH one
         CALL callpacketcool
-
-        ADD ESP, 10
+        //  ADD ESP, 10
     }
 
 }
