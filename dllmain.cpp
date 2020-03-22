@@ -3,12 +3,13 @@
 #include <Windows.h>
 #include <iostream>
 #include <string>
+const uint32_t baseadr = (uint32_t)GetModuleHandle(NULL);
 
-uint32_t packetlisteneradr = 0x4F82A1;
-uint32_t retadr = 0x4F82B1;
+uint32_t packetlisteneradr = baseadr + 0xF82A1;
+uint32_t retadr = baseadr + 0xF82B1;
 
 int packetID = 0;
-// aids code
+
 void SendPacket(int packetTypeID, int cid, int number, int one);
 
 
@@ -33,7 +34,12 @@ DWORD WINAPI InjectThread(HMODULE hModule)
     AllocConsole();
     freopen_s(&f, "CONOUT$", "w", stdout);
 
-    std::cout << "We are Injected";
+    std::cout << "We are Injected" << std::endl;
+
+    std::cout << "[3] Follow" << std::endl;
+    std::cout << "[4] For Reading Outgoing Packets" << std::endl;
+    std::cout << "[END] Eject DLL" << std::endl;
+
 
     while (true)
     {
@@ -115,9 +121,9 @@ void Printer()
 void SendPacket(int packetTypeID, int cid, int number, int one)
 {
     // dynamic addresses, just for testing purposes.
-    uint32_t callpackettypeFunc = 0x4F8290; 
-    uint32_t callPacketInformation = 0x4F88A0; 
-    uint32_t callpacketcool = 0x4F8E40;
+    uint32_t callpackettypeFunc = baseadr + 0xF8290;
+    uint32_t callPacketInformation = baseadr + 0xF88A0;
+    uint32_t callpacketcool = baseadr + 0xF8E40;
     __asm
     {
         PUSH packetTypeID
@@ -152,7 +158,7 @@ volatile void __declspec(naked) StartListen()
         PUSH EBX
         PUSH ESI
         PUSH EDI
-        JMP retadr;
+        JMP retadr
     }
 
 
