@@ -135,6 +135,7 @@ void SendPacket(int packetTypeID, int cid, int number, int one)
         PUSH one
         CALL callpacketcool
 
+        ADD ESP, 16
     }
 
 }
