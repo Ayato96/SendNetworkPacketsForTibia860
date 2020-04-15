@@ -37,7 +37,7 @@ DWORD WINAPI InjectThread(HMODULE hModule)
     std::cout << "We are Injected" << std::endl;
 
     std::cout << "[3] Follow" << std::endl;
-    std::cout << "[4] For Reading Outgoing Packets" << std::endl;
+    std::cout << "[4] For Reading Outgoing Packets" << std::endl; // not a proxy... simply reading a register containing packetID in a sendpacket function
     std::cout << "[END] Eject DLL" << std::endl;
 
 
